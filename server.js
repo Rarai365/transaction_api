@@ -1,11 +1,16 @@
 //create expres app
 import express from "express";
 import { connectToMongoDb } from "./config/dbConfig.js";
+import cors from "cors";
+import userRouter from "./router/userRouter.js";
+import transactionRouter from "./router/transactionRouter.js";
+
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 //middleware to parse request
 app.use(express.json());
+app.use(cors());
 
 // connect with db
 connectToMongoDb();
@@ -13,8 +18,9 @@ connectToMongoDb();
 //create user route
 
 //create user /create endpoint
-import userRouter from "./router/userRouter.js";
+
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/transactions", transactionRouter);
 
 //run the server
 app.listen(PORT, (error) => {
